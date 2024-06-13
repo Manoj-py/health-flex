@@ -12,7 +12,17 @@ All endpoints are relative to the base URL: `/api`.
 ## How to run
 
 ## Install all dependencies `npm i`
+
+- installs all the dependencies required for project to run
+
 ## To Run `npm run dev`
+
+- starts the the server connects to mongodb 
+
+## Env variables required
+- PORT =  any integer or valid port number
+- JWT_SECRET = secret to encrypty tokens
+- MONGO_URI = url of mongodb
 
 
 Some endpoints require authentication via a Bearer token in the `Authorization` header.
