@@ -1,0 +1,295 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "version": "1.0.0",
+        "title": "Health Flex Twitter-Backend-Api"
+    },
+    "host": "",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/users/": {
+            "get": {
+                "summary": "Get All users",
+                "description": "Returns all the users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/register": {
+            "post": {
+                "summary": "Create a new User",
+                "description": "Creates a new user and in response gives the username and hashed password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "password": "password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "summary": "Login in the User",
+                "description": "logs the users and gives the token",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "name",
+                        "password": "password",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User loggedin",
+                        "schema": {
+                            "$ref": "#/definitions/LoginResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/tweets/": {
+            "post": {
+                "summary": "Creates a new tweet",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token for authorization"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "text": "My first tweet",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TweetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TweetRequest"
+                        }
+                    },
+                    "404": {
+                        "description": "Tweet cannot be tweeted"
+                    }
+                }
+            }
+        },
+        "/tweets/{userId}/timeline": {
+            "get": {
+                "summary": "Retrieves the timeline tweets of a user",
+                "description": "This endpoint retrieves tweets from a user's timeline.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "The ID of the user whose timeline is being retrieved",
+                        "example": "666a7cc2df793a7506d5e45a"
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "description": "Cursor for pagination",
+                        "example": ""
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer",
+                        "description": "The number of tweets to retrieve",
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of tweets from the user's timeline",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tweet"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters"
+                    },
+                    "404": {
+                        "description": "Timeline not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UserRequest": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "example": "Manoj"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "Manoj@123"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "example": "666a7d3adf793a7506d5e465"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "Manoj"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "$2a$08$mnR3MKnaDx.A/5NsQkFNwuzhqjrpPBT2hr933jjvlqvD7pFUUlLJi"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-06-13T05:01:46.742Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-06-13T05:01:46.742Z"
+                }
+            }
+        },
+        "LoginResponse": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "required": [
+                    "title"
+                ],
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjZhN2ZlZWNhNWY2YTEyZTU0OTgyNTEiLCJpYXQiOjE3MTgyNTU2MTAsImV4cCI6MTcxODI1OTIxMH0.g70jhy_qx-tm224CvWUzqo5VNAxmb2awZzw-Fq1qf2c"
+                }
+            }
+        },
+        "TweetRequest": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "example": "My first tweet"
+                }
+            }
+        },
+        "Tweet": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The ID of the tweet"
+                },
+                "text": {
+                    "type": "string",
+                    "description": "The text content of the tweet"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The timestamp when the tweet was created"
+                },
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "The ID of the user"
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "The username of the user"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
