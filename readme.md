@@ -9,6 +9,12 @@ All endpoints are relative to the base URL: `/api`.
 
 ## Authentication
 
+## How to run
+
+## Install all dependencies `npm i`
+## To Run `npm run dev`
+
+
 Some endpoints require authentication via a Bearer token in the `Authorization` header.
 
 ## Endpoints
